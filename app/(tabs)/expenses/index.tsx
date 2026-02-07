@@ -126,7 +126,12 @@ export default function ExpensesListScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={styles.viewToggle}>
+      <View
+        style={[
+          styles.viewToggle,
+          { backgroundColor: colorScheme === "dark" ? "#252525" : "#f0f0f0" },
+        ]}
+      >
         <TouchableOpacity
           style={[
             styles.toggleButton,
@@ -248,9 +253,11 @@ const styles = StyleSheet.create({
   viewToggle: {
     flexDirection: "row",
     marginHorizontal: 16,
-    marginTop: 8,
-    marginBottom: 8,
-    gap: 8,
+    marginTop: 12,
+    marginBottom: 12,
+    padding: 4,
+    borderRadius: 12,
+    gap: 4,
   },
   toggleButton: {
     flex: 1,

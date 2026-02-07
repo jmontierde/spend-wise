@@ -20,7 +20,6 @@ export default function ExpensesLayout() {
         name="index"
         options={{
           title: "Expenses",
-          headerLargeTitle: true,
         }}
       />
       <Stack.Screen
