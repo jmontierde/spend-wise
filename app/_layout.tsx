@@ -11,7 +11,7 @@ import { StatusBar } from "expo-status-bar";
 import * as SecureStore from "expo-secure-store";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useColorScheme, ThemeProvider as AppThemeProvider } from "@/hooks/use-color-scheme";
 
 const convex = new ConvexReactClient(
   process.env.EXPO_PUBLIC_CONVEX_URL as string
@@ -69,7 +69,9 @@ export default function RootLayout() {
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <ClerkLoaded>
         <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-          <RootLayoutNav />
+          <AppThemeProvider>
+            <RootLayoutNav />
+          </AppThemeProvider>
         </ConvexProviderWithClerk>
       </ClerkLoaded>
     </ClerkProvider>

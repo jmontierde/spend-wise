@@ -183,6 +183,50 @@ export const getMonthlySpending = query({
   },
 });
 
+export const getExpensesByMonth = query({
+  args: {
+    userId: v.id("users"),
+    year: v.number(),
+    month: v.number(), // 1-12
+  },
+  handler: async (ctx, args) => {
+    const startDate = new Date(args.year, args.month - 1, 1).getTime();
+    const endDate = new Date(args.year, args.month, 0, 23, 59, 59, 999).getTime();
+
+    const expenses = await ctx.db
+      .query("expenses")
+      .withIndex("by_user_and_date", (q) => q.eq("userId", args.userId))
+      .filter((q) =>
+        q.and(
+          q.gte(q.field("date"), startDate),
+          q.lte(q.field("date"), endDate)
+        )
+      )
+      .collect();
+
+    // Group by day
+    const byDay: Record<string, { total: number; count: number; expenses: typeof expenses }> = {};
+
+    for (const expense of expenses) {
+      const date = new Date(expense.date);
+      const dayKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+      if (!byDay[dayKey]) {
+        byDay[dayKey] = { total: 0, count: 0, expenses: [] };
+      }
+      byDay[dayKey].total += expense.amount;
+      byDay[dayKey].count += 1;
+      byDay[dayKey].expenses.push(expense);
+    }
+
+    return {
+      expenses,
+      byDay,
+      total: expenses.reduce((sum, e) => sum + e.amount, 0),
+    };
+  },
+});
+
 export const getSpendingHistory = query({
   args: {
     userId: v.id("users"),

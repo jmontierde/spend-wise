@@ -16,7 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 
 import { api } from "@/convex/_generated/api";
-import { useColorScheme, setColorScheme } from "@/hooks/use-color-scheme";
+import { useTheme } from "@/hooks/use-color-scheme";
 import { Colors } from "@/constants/theme";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 
@@ -31,7 +31,7 @@ const CURRENCIES = [
 ];
 
 export default function SettingsScreen() {
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useTheme();
   const colors = Colors[colorScheme ?? "light"];
   const router = useRouter();
   const { user } = useUser();
