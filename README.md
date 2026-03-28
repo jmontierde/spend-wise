@@ -168,19 +168,19 @@ A full-featured personal finance application with **mobile** and **web** platfor
 4. Start the Convex development server
 
    ```bash
-   npm run dev:convex
+   npm run dev-convex
    ```
 
 5. Start the web app
 
    ```bash
-   npm run dev:web
+   npm run dev-web
    ```
 
 6. Start the mobile app (in a separate terminal)
 
    ```bash
-   npm run dev:mobile
+   npm run dev-mobile
    ```
 
    - Press `i` for iOS simulator
@@ -256,10 +256,10 @@ spend-wise/
 
 | Command | Description |
 |---|---|
-| `npm run dev:web` | Start the web app dev server |
-| `npm run dev:mobile` | Start the Expo mobile app |
-| `npm run dev:convex` | Start the Convex backend dev server |
-| `npm run build:web` | Build the web app for production |
+| `npm run dev-web` | Start the web app dev server |
+| `npm run dev-mobile` | Start the Expo mobile app |
+| `npm run dev-convex` | Start the Convex backend dev server |
+| `npm run build-web` | Build the web app for production |
 
 ## License
 

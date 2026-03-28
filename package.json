@@ -7,10 +7,10 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:mobile": "npm run start -w @spend-wise/mobile",
-    "dev:web": "npm run dev -w @spend-wise/web",
-    "build:web": "npm run build -w @spend-wise/web",
-    "dev:convex": "npx convex dev"
+    "dev-mobile": "cd apps/mobile && npm run start",
+    "dev-web": "cd apps/web && npm run dev",
+    "build-web": "cd apps/web && npm run build",
+    "dev-convex": "npx convex dev"
   },
   "devDependencies": {
     "typescript": "~5.9.2"
