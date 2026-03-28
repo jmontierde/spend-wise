@@ -1,6 +1,6 @@
 # Spend Wise - Smart Expense Tracker
 
-A full-featured personal finance app built with React Native and Expo, powered by AI insights to help you track expenses, manage budgets, and grow your savings.
+A full-featured personal finance application with **mobile** and **web** platforms, powered by AI insights to help you track expenses, manage budgets, and grow your savings. Built as a monorepo with a shared Convex backend.
 
 ## Screenshots
 
@@ -89,32 +89,49 @@ A full-featured personal finance app built with React Native and Expo, powered b
 - Personalized greeting with current date
 - Monthly spending summary card
 - Recent expenses quick view
-- Quick-add floating action button
+- Quick-add floating action button (mobile) / button (web)
 
 ### Settings & Personalization
 - Dark mode support
 - Multi-currency support: PHP, USD, EUR, GBP, JPY, CAD, AUD
 - Edit display name
-- Haptic feedback throughout the app
+- Haptic feedback throughout the mobile app
 
 ## Tech Stack
 
+### Shared
+| Technology | Purpose |
+|---|---|
+| **Convex** | Real-time backend database & serverless functions |
+| **Clerk** | Authentication (email/password with verification) |
+| **OpenAI GPT-4o-mini** | AI categorization & financial insights |
+| **TypeScript** | Type-safe codebase |
+
+### Mobile (`apps/mobile/`)
 | Technology | Purpose |
 |---|---|
 | **React Native + Expo** | Cross-platform mobile framework |
 | **Expo Router** | File-based navigation |
-| **Convex** | Real-time backend database & serverless functions |
-| **Clerk** | Authentication (email/password with verification) |
-| **OpenAI GPT-4o-mini** | AI categorization & financial insights |
 | **Victory Native** | Charts and data visualization |
+
+### Web (`apps/web/`)
+| Technology | Purpose |
+|---|---|
+| **React 19** | Web UI framework |
+| **Vite** | Build tool and dev server |
+| **Redux Toolkit** | Client-side state management (theme, UI) |
+| **React Router v7** | Client-side routing |
+| **Tailwind CSS v4** | Utility-first styling |
+| **Recharts** | Charts and data visualization |
+| **Lucide React** | Icon library |
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js (v18+)
-- npm or yarn
-- Expo CLI
+- npm
+- Expo CLI (for mobile development)
 - iOS Simulator or Android Emulator (or Expo Go on a physical device)
 
 ### Installation
@@ -126,7 +143,7 @@ A full-featured personal finance app built with React Native and Expo, powered b
    cd spend-wise
    ```
 
-2. Install dependencies
+2. Install dependencies (npm workspaces will install for all apps)
 
    ```bash
    npm install
@@ -137,57 +154,112 @@ A full-featured personal finance app built with React Native and Expo, powered b
    Create a `.env` file in the root directory:
 
    ```env
+   # Mobile (Expo)
    EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
    EXPO_PUBLIC_CONVEX_URL=your_convex_url
    CLERK_SECRET_KEY=your_clerk_secret_key
+   GITHUB_TOKEN=your_github_token
+
+   # Web (Vite)
+   VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+   VITE_CONVEX_URL=your_convex_url
    ```
 
 4. Start the Convex development server
 
    ```bash
-   npx convex dev
+   npm run dev:convex
    ```
 
-5. Start the app
+5. Start the web app
 
    ```bash
-   npx expo start
+   npm run dev:web
    ```
 
-6. Open in simulator
-   - Press `s` to switch to Expo Go
+6. Start the mobile app (in a separate terminal)
+
+   ```bash
+   npm run dev:mobile
+   ```
+
    - Press `i` for iOS simulator
    - Press `a` for Android emulator
-   - Press `w` for web
+   - Press `w` for web (Expo web)
 
 ## Project Structure
 
 ```
 spend-wise/
-├── app/                    # Screens & navigation (file-based routing)
-│   ├── (tabs)/             # Main tab screens
-│   │   ├── index.tsx       # Dashboard
-│   │   ├── expenses.tsx    # Expense list & calendar
-│   │   ├── insights.tsx    # AI insights & charts
-│   │   ├── savings.tsx     # Savings overview
-│   │   ├── budget.tsx      # Budget management
-│   │   └── settings.tsx    # App settings
-│   ├── expense/            # Add/edit expense screens
-│   ├── savings/            # Savings detail & transaction screens
-│   └── _layout.tsx         # Root layout with auth & providers
-├── convex/                 # Backend functions
-│   ├── expenses.ts         # Expense CRUD & queries
-│   ├── budgets.ts          # Budget management
-│   ├── savings.ts          # Savings accounts & transactions
-│   ├── ai.ts               # AI categorization & insights
-│   ├── insights.ts         # Insights storage & retrieval
-│   ├── banks.ts            # Bank data & seeding
-│   ├── categories.ts       # Category management
-│   └── auth.ts             # User authentication helpers
-├── components/             # Reusable UI components
-├── constants/              # Theme colors & configuration
-└── assets/                 # Images, icons & fonts
+├── apps/
+│   ├── mobile/                 # React Native + Expo mobile app
+│   │   ├── app/                # Screens & navigation (file-based routing)
+│   │   │   ├── (auth)/         # Sign in & sign up screens
+│   │   │   ├── (tabs)/         # Main tab screens
+│   │   │   │   ├── index.tsx   # Dashboard
+│   │   │   │   ├── expenses/   # Expense list, calendar, add, edit
+│   │   │   │   ├── insights.tsx# AI insights & charts
+│   │   │   │   ├── savings/    # Savings overview, detail, transactions
+│   │   │   │   ├── budget.tsx  # Budget management
+│   │   │   │   └── settings.tsx# App settings
+│   │   │   └── _layout.tsx     # Root layout with auth & providers
+│   │   ├── components/         # React Native UI components
+│   │   ├── constants/          # Theme, bank logos
+│   │   ├── hooks/              # Custom hooks (color scheme, theme)
+│   │   ├── utils/              # Utility functions
+│   │   └── assets/             # Images, icons & fonts
+│   │
+│   └── web/                    # React.js web application
+│       └── src/
+│           ├── pages/          # Page components
+│           │   ├── Dashboard.tsx
+│           │   ├── Expenses.tsx
+│           │   ├── Insights.tsx
+│           │   ├── Savings.tsx
+│           │   ├── Budget.tsx
+│           │   ├── Settings.tsx
+│           │   └── ...         # Add/edit/detail pages
+│           ├── components/     # Web UI components
+│           │   ├── layout/     # Sidebar, Header, AppLayout
+│           │   ├── charts/     # Recharts components
+│           │   ├── ui/         # Button, Card, Input, Modal
+│           │   └── ...         # Feature components
+│           ├── store/          # Redux Toolkit store & slices
+│           ├── hooks/          # Custom hooks
+│           ├── router.tsx      # React Router configuration
+│           └── App.tsx         # Providers (Clerk, Convex, Redux)
+│
+├── packages/
+│   └── shared/                 # Shared code between mobile & web
+│       └── src/
+│           ├── format-currency.ts  # Currency formatting utilities
+│           ├── constants.ts        # Currencies, colors, category icons
+│           ├── types.ts            # Shared TypeScript types
+│           └── index.ts            # Barrel export
+│
+├── convex/                     # Backend (shared by both apps)
+│   ├── schema.ts               # Database schema (7 tables)
+│   ├── expenses.ts             # Expense CRUD & analytics
+│   ├── budgets.ts              # Budget management
+│   ├── savings.ts              # Savings accounts & transactions
+│   ├── ai.ts                   # AI categorization & insights
+│   ├── insights.ts             # Insights storage & retrieval
+│   ├── banks.ts                # Bank data & seeding
+│   ├── categories.ts           # Category management
+│   └── auth.ts                 # User authentication helpers
+│
+├── package.json                # Workspace root (npm workspaces)
+└── tsconfig.base.json          # Shared TypeScript config
 ```
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev:web` | Start the web app dev server |
+| `npm run dev:mobile` | Start the Expo mobile app |
+| `npm run dev:convex` | Start the Convex backend dev server |
+| `npm run build:web` | Build the web app for production |
 
 ## License
 
