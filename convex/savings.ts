@@ -179,7 +179,7 @@ export const listTransactions = query({
     if (args.accountId) {
       transactions = await ctx.db
         .query("savingsTransactions")
-        .withIndex("by_account", (q) => q.eq("accountId", args.accountId))
+        .withIndex("by_account", (q) => q.eq("accountId", args.accountId!))
         .order("desc")
         .take(limit);
     } else {

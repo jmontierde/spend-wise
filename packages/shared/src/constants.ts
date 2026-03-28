@@ -1,0 +1,57 @@
+export const CURRENCIES = [
+  { code: "PHP", symbol: "₱", name: "Philippine Peso" },
+  { code: "USD", symbol: "$", name: "US Dollar" },
+  { code: "EUR", symbol: "€", name: "Euro" },
+  { code: "GBP", symbol: "£", name: "British Pound" },
+  { code: "JPY", symbol: "¥", name: "Japanese Yen" },
+  { code: "CAD", symbol: "C$", name: "Canadian Dollar" },
+  { code: "AUD", symbol: "A$", name: "Australian Dollar" },
+] as const;
+
+export const Colors = {
+  light: {
+    text: "#11181C",
+    background: "#fff",
+    tint: "#0a7ea4",
+    icon: "#687076",
+    tabIconDefault: "#687076",
+    tabIconSelected: "#0a7ea4",
+    card: "#fff",
+    cardHover: "#f8f9fa",
+    border: "#e5e7eb",
+    inputBg: "#f5f5f5",
+  },
+  dark: {
+    text: "#ECEDEE",
+    background: "#151718",
+    tint: "#4db8db",
+    icon: "#9BA1A6",
+    tabIconDefault: "#9BA1A6",
+    tabIconSelected: "#4db8db",
+    card: "#1a1a1a",
+    cardHover: "#222",
+    border: "#2a2a2a",
+    inputBg: "#2a2a2a",
+  },
+} as const;
+
+export const CATEGORY_ICONS: Record<string, string> = {
+  "fork.knife": "🍽️",
+  "car.fill": "🚗",
+  "cart.fill": "🛒",
+  "film.fill": "🎬",
+  "cross.case.fill": "🏥",
+  "book.fill": "📚",
+  "house.fill": "🏠",
+  "tshirt.fill": "👕",
+  "bolt.fill": "⚡",
+  "airplane": "✈️",
+  "gift.fill": "🎁",
+  "ellipsis.circle.fill": "📦",
+  "briefcase.fill": "💼",
+  "wrench.fill": "🔧",
+  "heart.fill": "❤️",
+  "music.note": "🎵",
+  "sportscourt.fill": "⚽",
+  "pawprint.fill": "🐾",
+};
