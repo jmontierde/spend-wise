@@ -10,6 +10,7 @@ import EmptyState from "@/components/ui/EmptyState";
 import InsightCard from "@/components/insights/InsightCard";
 import SpendingChart from "@/components/charts/SpendingChart";
 import SpendingTrendChart from "@/components/charts/SpendingTrendChart";
+import { SkeletonInsightCard, SkeletonChart } from "@/components/ui/Skeleton";
 
 export default function Insights() {
   const { currentUser } = useCurrentUser();
@@ -79,46 +80,63 @@ export default function Insights() {
         </div>
 
         {/* AI Insights */}
-        {insights && insights.length > 0 && (
-          <div className="mb-6">
-            <h3 className="font-semibold mb-4">Your Insights</h3>
-            <div className="space-y-3">
-              {insights.map((insight: any) => (
-                <InsightCard key={insight._id} insight={insight} />
-              ))}
-            </div>
+        {insights === undefined ? (
+          <div className="mb-6 space-y-3">
+            <SkeletonInsightCard />
+            <SkeletonInsightCard />
           </div>
+        ) : (
+          insights.length > 0 && (
+            <div className="mb-6">
+              <h3 className="font-semibold mb-4">Your Insights</h3>
+              <div className="space-y-3">
+                {insights.map((insight: any) => (
+                  <InsightCard key={insight._id} insight={insight} />
+                ))}
+              </div>
+            </div>
+          )
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Spending by Category */}
-          <Card className="p-5">
-            <h3 className="font-semibold mb-4">Spending by Category</h3>
-            {categorySpending.length > 0 ? (
-              <SpendingChart data={categorySpending} currency={currency} />
-            ) : (
-              <EmptyState
-                icon={<BarChart3 size={48} />}
-                title="No data yet"
-                subtitle="Add expenses to see spending breakdown"
-              />
-            )}
-          </Card>
+          {monthlySpending === undefined ? (
+            <SkeletonChart />
+          ) : (
+            <Card className="p-5">
+              <h3 className="font-semibold mb-4">Spending by Category</h3>
+              {categorySpending.length > 0 ? (
+                <SpendingChart data={categorySpending} currency={currency} />
+              ) : (
+                <EmptyState
+                  icon={<BarChart3 size={48} />}
+                  title="No data yet"
+                  subtitle="Add expenses to see spending breakdown"
+                />
+              )}
+            </Card>
+          )}
 
           {/* 6-Month Trend */}
-          <Card className="p-5">
-            <h3 className="font-semibold mb-4">6-Month Trend</h3>
-            {spendingHistory &&
-            spendingHistory.some((m: any) => m.total > 0) ? (
-              <SpendingTrendChart data={spendingHistory} currency={currency} />
-            ) : (
-              <EmptyState
-                icon={<TrendingUp size={48} />}
-                title="No data yet"
-                subtitle="Track expenses over time to see trends"
-              />
-            )}
-          </Card>
+          {spendingHistory === undefined ? (
+            <SkeletonChart />
+          ) : (
+            <Card className="p-5">
+              <h3 className="font-semibold mb-4">6-Month Trend</h3>
+              {spendingHistory.some((m: any) => m.total > 0) ? (
+                <SpendingTrendChart
+                  data={spendingHistory}
+                  currency={currency}
+                />
+              ) : (
+                <EmptyState
+                  icon={<TrendingUp size={48} />}
+                  title="No data yet"
+                  subtitle="Track expenses over time to see trends"
+                />
+              )}
+            </Card>
+          )}
         </div>
       </div>
     </div>

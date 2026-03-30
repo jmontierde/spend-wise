@@ -11,6 +11,7 @@ import Input from "@/components/ui/Input";
 import Modal from "@/components/ui/Modal";
 import EmptyState from "@/components/ui/EmptyState";
 import BudgetProgress from "@/components/charts/BudgetProgress";
+import { SkeletonBudgetProgress } from "@/components/ui/Skeleton";
 
 export default function Budget() {
   const { currentUser } = useCurrentUser();
@@ -99,7 +100,12 @@ export default function Budget() {
         </div>
 
         {/* Overall Budget */}
-        {budgetStatus?.overallBudget ? (
+        {budgetStatus === undefined ? (
+          <div className="space-y-4 mb-6">
+            <SkeletonBudgetProgress />
+            <SkeletonBudgetProgress />
+          </div>
+        ) : budgetStatus?.overallBudget ? (
           <Card className="p-5 mb-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">Overall Budget</h3>

@@ -13,6 +13,7 @@ import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
+import { SkeletonSettingsRow } from "@/components/ui/Skeleton";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -72,43 +73,50 @@ export default function Settings() {
           <h3 className="text-xs font-semibold uppercase text-gray-400 mb-3 ml-1">
             Profile
           </h3>
-          <Card className="divide-y divide-gray-100 dark:divide-gray-800">
-            <button
-              className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-              onClick={() => {
-                setName(currentUser?.name || "");
-                setEditingName(true);
-              }}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-[#0a7ea4]/10 dark:bg-[#4db8db]/10 flex items-center justify-center">
-                  <User size={18} className="text-[#0a7ea4] dark:text-[#4db8db]" />
+          {!currentUser ? (
+            <Card className="divide-y divide-gray-100 dark:divide-gray-800">
+              <SkeletonSettingsRow />
+              <SkeletonSettingsRow />
+            </Card>
+          ) : (
+            <Card className="divide-y divide-gray-100 dark:divide-gray-800">
+              <button
+                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                onClick={() => {
+                  setName(currentUser?.name || "");
+                  setEditingName(true);
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-[#0a7ea4]/10 dark:bg-[#4db8db]/10 flex items-center justify-center">
+                    <User size={18} className="text-[#0a7ea4] dark:text-[#4db8db]" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-medium">Name</p>
+                    <p className="text-xs text-gray-400">
+                      {currentUser?.name || "Not set"}
+                    </p>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <p className="text-sm font-medium">Name</p>
-                  <p className="text-xs text-gray-400">
-                    {currentUser?.name || "Not set"}
-                  </p>
-                </div>
-              </div>
-              <span className="text-gray-300 dark:text-gray-600">&rsaquo;</span>
-            </button>
+                <span className="text-gray-300 dark:text-gray-600">&rsaquo;</span>
+              </button>
 
-            <div className="flex items-center justify-between p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                  <Mail size={18} className="text-blue-500" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Email</p>
-                  <p className="text-xs text-gray-400">
-                    {currentUser?.email ||
-                      user?.primaryEmailAddress?.emailAddress}
-                  </p>
+              <div className="flex items-center justify-between p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                    <Mail size={18} className="text-blue-500" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Email</p>
+                    <p className="text-xs text-gray-400">
+                      {currentUser?.email ||
+                        user?.primaryEmailAddress?.emailAddress}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          )}
         </div>
 
         {/* Preferences Section */}

@@ -11,6 +11,7 @@ import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Modal from "@/components/ui/Modal";
+import { Skeleton, SkeletonExpenseList } from "@/components/ui/Skeleton";
 
 export default function SavingsDetail() {
   const navigate = useNavigate();
@@ -68,7 +69,21 @@ export default function SavingsDetail() {
     }
   };
 
-  if (!account || !bank) return null;
+  if (!account || !bank) {
+    return (
+      <div>
+        <Header title="Account Details" />
+        <div className="p-6 max-w-3xl space-y-6">
+          <Skeleton className="h-40 w-full rounded-2xl" />
+          <div className="flex gap-3">
+            <Skeleton className="h-12 flex-1 rounded-xl" />
+            <Skeleton className="h-12 flex-1 rounded-xl" />
+          </div>
+          <SkeletonExpenseList count={4} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>

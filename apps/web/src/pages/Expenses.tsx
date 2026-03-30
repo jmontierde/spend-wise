@@ -13,6 +13,7 @@ import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import EmptyState from "@/components/ui/EmptyState";
 import ExpenseListItem from "@/components/expense/ExpenseListItem";
+import { SkeletonExpenseList } from "@/components/ui/Skeleton";
 
 export default function Expenses() {
   const navigate = useNavigate();
@@ -86,6 +87,9 @@ export default function Expenses() {
         </div>
 
         {viewMode === "list" ? (
+          expensesData === undefined ? (
+            <SkeletonExpenseList count={8} />
+          ) : (
           <Card className="overflow-hidden">
             {expensesData?.items && expensesData.items.length > 0 ? (
               <div className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -108,6 +112,7 @@ export default function Expenses() {
               />
             )}
           </Card>
+          )
         ) : (
           <Card className="p-5">
             {/* Calendar Header */}

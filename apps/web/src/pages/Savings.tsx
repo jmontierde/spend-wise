@@ -10,6 +10,11 @@ import Header from "@/components/layout/Header";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import EmptyState from "@/components/ui/EmptyState";
+import {
+  Skeleton,
+  SkeletonAccountCard,
+  SkeletonExpenseList,
+} from "@/components/ui/Skeleton";
 
 function AccountCard({
   account,
@@ -135,48 +140,71 @@ export default function Savings() {
         </div>
 
         {/* Total Balance */}
-        <Card className="p-5 mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              Total Balance
-            </span>
-            <button
-              onClick={() => setShowBalance(!showBalance)}
-              className="p-1 text-gray-400 hover:text-gray-600"
-            >
-              {showBalance ? <Eye size={18} /> : <EyeOff size={18} />}
-            </button>
-          </div>
-          <p className="text-3xl font-bold mb-4">
-            {showBalance
-              ? formatCurrency(totalBalance?.total || 0, currency)
-              : "••••••"}
-          </p>
-          <div className="flex gap-8">
-            <div>
-              <p className="text-xs text-gray-400 mb-1">Savings</p>
-              <p className="font-semibold">
-                {showBalance
-                  ? formatCurrency(totalBalance?.savingsTotal || 0, currency)
-                  : "••••••"}
-              </p>
+        {totalBalance === undefined ? (
+          <Card className="p-5 mb-6 space-y-4">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-9 w-48" />
+            <div className="flex gap-8">
+              <div className="space-y-1.5">
+                <Skeleton className="h-3 w-16" />
+                <Skeleton className="h-5 w-28" />
+              </div>
+              <div className="space-y-1.5">
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-5 w-28" />
+              </div>
             </div>
-            <div>
-              <p className="text-xs text-gray-400 mb-1">Time Deposits</p>
-              <p className="font-semibold">
-                {showBalance
-                  ? formatCurrency(
-                      totalBalance?.timeDepositTotal || 0,
-                      currency
-                    )
-                  : "••••••"}
-              </p>
+          </Card>
+        ) : (
+          <Card className="p-5 mb-6">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                Total Balance
+              </span>
+              <button
+                onClick={() => setShowBalance(!showBalance)}
+                className="p-1 text-gray-400 hover:text-gray-600"
+              >
+                {showBalance ? <Eye size={18} /> : <EyeOff size={18} />}
+              </button>
             </div>
-          </div>
-        </Card>
+            <p className="text-3xl font-bold mb-4">
+              {showBalance
+                ? formatCurrency(totalBalance?.total || 0, currency)
+                : "••••••"}
+            </p>
+            <div className="flex gap-8">
+              <div>
+                <p className="text-xs text-gray-400 mb-1">Savings</p>
+                <p className="font-semibold">
+                  {showBalance
+                    ? formatCurrency(totalBalance?.savingsTotal || 0, currency)
+                    : "••••••"}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 mb-1">Time Deposits</p>
+                <p className="font-semibold">
+                  {showBalance
+                    ? formatCurrency(
+                        totalBalance?.timeDepositTotal || 0,
+                        currency
+                      )
+                    : "••••••"}
+                </p>
+              </div>
+            </div>
+          </Card>
+        )}
 
         {/* Accounts Grid */}
-        {accounts && accounts.length > 0 ? (
+        {accounts === undefined ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <SkeletonAccountCard />
+            <SkeletonAccountCard />
+            <SkeletonAccountCard />
+          </div>
+        ) : accounts.length > 0 ? (
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">
@@ -208,7 +236,9 @@ export default function Savings() {
         )}
 
         {/* Recent Transactions */}
-        {recentTransactions && recentTransactions.length > 0 && (
+        {recentTransactions === undefined ? (
+          <SkeletonExpenseList count={3} />
+        ) : recentTransactions.length > 0 && (
           <Card className="overflow-hidden">
             <div className="flex items-center justify-between px-5 pt-5 pb-2">
               <h3 className="font-semibold">Recent Transactions</h3>
@@ -219,7 +249,8 @@ export default function Savings() {
               ))}
             </div>
           </Card>
-        )}
+        )
+        }
       </div>
     </div>
   );
